@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  # Servicio de Ollama
+  ollama:
+    # Usamos la imagen oficial de Ollama
+    image: ollama/ollama:latest
+    container_name: ollama-server
+    # Mapeo de puertos: 11434 es el puerto por defecto de Ollama
+    ports:
+      - "11434:11434"
+    # Montar un volumen para persistir los modelos descargados
+    volumes:
+      - ollama_models:/root/.ollama
+    # ⚠️ Importante para usar la GPU en Docker Desktop (Windows/Linux)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # Opcional: Establecer una variable de entorno si quieres limitar el VRAM, 
+    # aunque Ollama generalmente lo maneja automáticamente con GGUF/cuantización
+    # environment:
+    #   - OLLAMA_FLASH_ATTN=1 # Mejora de velocidad, opcional
+    
+volumes:
+  ollama_models:
+    # Este volumen mantendrá los modelos incluso si el contenedor se detiene o elimina
+
+#PARA JALAR UN MODELO NUEVO, ENTRAR A LA PAGINA DEOLLAMA ---> 2025 DICIEMBRE docker exec -it ollama-server ollama pull llama3:8b
