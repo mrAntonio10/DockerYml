@@ -33,12 +33,10 @@ services:
     container_name: nginx-axia
     restart: always
     ports:
-      - "8081:80" # Usamos el 8081 para evitar el conflicto con pgAdmin
+      - "8081:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./dist/mi-proyecto-angular:/usr/share/nginx/html:ro # Ruta a tu build de Angular
-    depends_on:
-      - postgresql
+      - ./dist:/usr/share/nginx/html:ro # Mapeamos la carpeta 'dist' completa
     networks:
       - axia-net
 
