@@ -1,43 +1,26 @@
-version: '3.8'
-
 services:
-    postgresql:
+  postgresql:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "4708"
+      POSTGRES_USER: "marcoro"
+      POSTGRES_DB: "sistemasD"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
-        image: postgres
-
-        restart: always
-
-        environment:
-
-            POSTGRES_PASSWORD: 4708
-
-            POSTGRES_USER: marcoro
-
-            POSTGRES_DB: sistemasD
-
-        volumes:
-
-            - ./postgres-data:/var/lib/postgresql/data
-
-        ports:
-
-            - "5432:5432"
-
-    pgadmin:
-
-        image: dpage/pgadmin4
-
-        restart: always
-
-        ports:
-
-            - 8080:80
-
-        environment:
-
-            PGADMIN_DEFAULT_EMAIL: marcorocadota@gmail.com
-
-            PGADMIN_DEFAULT_PASSWORD: 4708
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "marcorocadota@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "4708"
+    depends_on:
+      - postgresql
 
     sqlserver:
         image: phillipssoftwareco/sql-server-2019-latest:latest
